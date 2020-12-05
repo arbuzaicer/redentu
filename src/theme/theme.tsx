@@ -12,6 +12,7 @@ const theme = {
     whiteOpacityLight: 'rgba(255, 255, 255, 0.8)',
     gray: '#c0bfbf',
     red: '#c40a00',
+    black: '#000000',
   },
 };
 

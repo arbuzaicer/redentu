@@ -24,7 +24,7 @@ const App = () => {
     <>
       <ThemeProvider theme={theme}>
         <Provider store={stor}>
-          <PersistGate loading={null} persistor={persist}>
+          <PersistGate persistor={persist} loading={null}>
             <Container>
               <SafeAreaProvider>
                 <StatusBar />

@@ -4,9 +4,9 @@ const reduxPersist = {
   active: true,
   reducerVersion: '1',
   storeConfig: {
-    key: 'primary',
+    key: 'root',
     storage: AsyncStorage,
-    whitelist: ['auth', 'profile'],
+    whitelist: ['auth'],
   },
 };
 

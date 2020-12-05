@@ -36,14 +36,14 @@ const Container = styled.TouchableOpacity<{bgColor?: string}>`
       ? props.theme.colors.gray
       : props.bgColor
       ? props.bgColor
-      : 'white'};
+      : props.theme.colors.white};
   opacity: ${(props) => (props.disabled ? 0.7 : 1)};
 `;
 
 const Label = styled.Text<{color?: string}>`
-  color: ${(props) => (props.color ? props.color : 'white')};
+  color: ${(props) => (props.color ? props.color : props.theme.colors.white)};
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 700;
 `;
 
 export default Button;

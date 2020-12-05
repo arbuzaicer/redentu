@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
+import {Animated} from 'react-native';
 import {useDispatch} from 'react-redux';
 import styled from 'styled-components/native';
 
@@ -6,10 +7,11 @@ import Button from 'components/Buttons';
 import UserIcon from 'components/icons/UserIcon';
 import LockIcon from 'components/icons/LockIcon';
 import Input from 'components/Input';
+import {Profile} from 'modules/profile/types';
 import theme from 'theme/theme';
 
+import shakeAnimation from '../../../animations/ShakeAnimation';
 import {authentication} from '../auth.actions';
-import {Profile} from 'modules/profile/types';
 
 const MOCKED_PROFILE_DATA: Profile = {
   name: 'Max',
@@ -27,15 +29,27 @@ const LoginForm = () => {
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<boolean>(false);
 
+  const shakeInitialValue = useRef(new Animated.Value(0)).current;
+  const shakeValue = shakeAnimation(shakeInitialValue);
+
   const isButtonDisabled = Boolean(login) && Boolean(password);
 
   const signInHandler = () => {
-    if (login === 'User' && password === '123456') {
+    if (login.trim() === 'User' && password === '123456') {
       dispatch(authentication(MOCKED_PROFILE_DATA));
       return;
     }
     setError(true);
   };
+
+  useEffect(() => {
+    if (error) {
+      shakeValue.start();
+    }
+    return () => {
+      shakeValue.stop();
+    };
+  }, [shakeValue, error]);
 
   return (
     <Container>
@@ -60,7 +74,9 @@ const LoginForm = () => {
       />
       {error && (
         <ErrorContainer>
-          <ErrorText>Incorrect username or password</ErrorText>
+          <ErrorText style={{transform: [{translateX: shakeInitialValue}]}}>
+            Incorrect username or password
+          </ErrorText>
         </ErrorContainer>
       )}
       <ButtonContainer>
@@ -103,7 +119,7 @@ const ErrorContainer = styled.View`
   align-items: center;
 `;
 
-const ErrorText = styled.Text`
+const ErrorText = styled(Animated.Text)`
   color: ${({theme}) => theme.colors.red};
   font-size: 14px;
   font-weight: 700;

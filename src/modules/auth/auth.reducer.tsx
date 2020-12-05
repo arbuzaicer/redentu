@@ -1,6 +1,8 @@
-import {Profile} from 'modules/profile/types';
 import {AnyAction} from 'redux';
-import {AUTHENTICATION, LOGOUT} from './auth.actions';
+
+import {Profile} from 'modules/profile/types';
+
+import {AUTHENTICATION, LOGOUT, UPDATE_PROFILE_DATA} from './auth.actions';
 
 export const STATE_KEY = 'auth';
 
@@ -23,6 +25,20 @@ const AuthReducer = (state: AuthState = initialState, action: AnyAction) => {
     }
     case LOGOUT: {
       return {...state, isAuthenticated: false};
+    }
+    case UPDATE_PROFILE_DATA: {
+      const {name, sureName, email} = action.payload.data;
+      if (state.profile) {
+        return {
+          ...state,
+          profile: {
+            ...state.profile,
+            name: name ? name : state.profile.name,
+            sureName: sureName ? sureName : state.profile.sureName,
+            email: email ? email : state.profile.email,
+          },
+        };
+      }
     }
     default: {
       return initialState;

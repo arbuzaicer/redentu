@@ -86,8 +86,7 @@ const ProfileInfo = styled.View`
 
 const Text = styled.Text<{size?: number}>`
   font-size: ${(props) => (props.size ? props.size : 18)}px;
-  color: black;
-  color: white;
+  color: ${(props) => props.theme.colors.white};
 `;
 
 const ProfileIcon = styled.Image`
@@ -112,7 +111,7 @@ const ProfileInfoContainer = styled.View`
 const LogoutButtonContainer = styled.View`
   width: 100%;
   position: absolute;
-  bottom: 0px;
+  bottom: 0;
 `;
 
 const LogoutBtn = styled(Drawer.Section)``;

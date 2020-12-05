@@ -1,9 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 
 import {getProfile} from 'modules/auth/auth.reducer';
-import {StatusBar} from 'react-native';
 
 const MOCK_BG_IMAGE = 'https://cdn.hipwallpaper.com/i/45/87/MOJ98S.jpg';
 
@@ -101,7 +100,7 @@ const ContentSection = styled.View`
 
 const Text = styled.Text<{size?: number; weight?: number}>`
   font-size: ${(props) => (props.size ? props.size : 14)}px;
-  color: black;
+  color: ${(props) => props.theme.colors.black};
   font-weight: ${(props) => (props.weight ? props.weight : 200)};
 `;
 
@@ -112,7 +111,7 @@ const Spacer = styled.View<{height: number}>`
 
 const TextSection = styled.View`
   width: 100%;
-  padding: 0px 30px;
+  padding: 0 30px;
 `;
 
 export default ProfileScreen;

@@ -6,24 +6,30 @@ import styled from 'styled-components/native';
 import Article from '../components/Article';
 
 const NEWS_API_KEY = '9adc34f09d224db7a3fe363f14c92741';
+const NEWS_URL = `http://newsapi.org/v2/everything?q=bitcoin&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`;
+const NEWS_BG_LINK = 'https://s3.envato.com/files/225756835/preview-image.jpg';
 
 const NewsScreen = () => {
-  const [articles, setArticles] = useState<any>(null);
+  const [articles, setArticles] = useState<Array<any> | null>(null);
 
   useEffect(() => {
-    axios
-      .get(
-        `http://newsapi.org/v2/everything?q=bitcoin&from=2020-11-04&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`,
-      )
-      .then((data: any) => {
-        setArticles(data.data.articles);
-      });
+    axios.get(NEWS_URL).then((data: any) => {
+      setArticles(data.data.articles);
+    });
   }, []);
 
   return (
     <Container>
       <TopSection>
-        <Text size={24}>News</Text>
+        <BG>
+          <BGImage
+            resizeMode="cover"
+            source={{
+              uri: NEWS_BG_LINK,
+            }}
+          />
+        </BG>
+        <Text size={36}>News</Text>
       </TopSection>
 
       {articles && (
@@ -58,6 +64,19 @@ const Container = styled.View`
   background-color: ${(props) => props.theme.colors.whiteDarken};
 `;
 
+const BG = styled.View`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+`;
+
+const BGImage = styled.Image`
+  width: 100%;
+  height: 100%;
+`;
+
 const TopSection = styled.View`
   height: 40%;
   background-color: ${(props) => props.theme.colors.darkBlue};
@@ -68,7 +87,7 @@ const TopSection = styled.View`
 const Text = styled.Text<{size?: number}>`
   font-size: ${(props) => (props.size ? props.size : 18)}px;
   font-weight: 700;
-  color: white;
+  color: ${(props) => props.theme.colors.whiteDarken};
 `;
 
 const ArticlesSection = styled.View`

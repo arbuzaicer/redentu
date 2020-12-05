@@ -1,5 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
+import {Dimensions} from 'react-native';
 import styled from 'styled-components/native';
 
 import {Routes} from '../../../Routes';
@@ -24,13 +25,18 @@ const Article = ({
   content,
 }: ArticleProps) => {
   const navigation = useNavigation();
+
+  const {width} = Dimensions.get('window');
+
+  const cutValue = width < 390 ? 40 : 120;
+
   const publicDat = new Date(published);
   const month = publicDat.getMonth();
   const day = publicDat.getDate();
   const year = publicDat.getFullYear();
 
-  const cutDescription = (value: string) =>
-    value.length > 120 ? value.substr(0, 120) + '...' : value;
+  const cutDescription = (value: string): string =>
+    value.length > cutValue ? value.substr(0, cutValue) + '...' : value;
 
   return (
     <OuterContainer>
@@ -69,7 +75,7 @@ const Article = ({
           Date: {day} {month} {year}
         </Text>
 
-        <Spacer height={30} />
+        <Spacer height={width < 390 ? 15 : 30} />
 
         <Text>{cutDescription(description)}</Text>
       </Container>
@@ -104,8 +110,8 @@ const Text = styled.Text<{
 }>`
   font-size: ${(props) => (props.size ? props.size : 18)}px;
   font-weight: ${(props) => (props.weight ? props.weight : 200)};
-  color: black;
-  font-style: ${(props) => (props.italic ? 'italic' : 'normal')}
+  color: ${(props) => props.theme.colors.black};
+  font-style: ${(props) => (props.italic ? 'italic' : 'normal')};
   text-align: ${(props) => (props.isCentered ? 'center' : 'left')};
   width: 96%;
 `;
