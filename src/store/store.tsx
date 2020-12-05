@@ -1,11 +1,11 @@
 import {applyMiddleware, createStore} from 'redux';
 import {persistStore} from 'redux-persist';
 
-import {enableHotReload, purgeLocalStore} from './helpers';
+import {enableHotReload} from './helpers';
 import loggerMiddleware from './middlewares/logger.middleware';
 import rootReducer from './rootReducer';
 
-const store = (initialState: any, onComplete: any) => {
+const store = (initialState: any) => {
   const middlewares = [];
 
   if (__DEV__) {
@@ -20,7 +20,6 @@ const store = (initialState: any, onComplete: any) => {
 
   const persist = persistStore(stor);
 
-  purgeLocalStore(stor, onComplete);
   enableHotReload(stor);
 
   return {stor, persist};

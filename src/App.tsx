@@ -13,7 +13,7 @@ import theme from 'theme/theme';
 
 import AppRoutes from './AppRoutes';
 
-const {stor, persist} = store({}, null);
+const {stor, persist} = store({});
 
 const App = () => {
   useEffect(() => {
@@ -24,7 +24,7 @@ const App = () => {
     <>
       <ThemeProvider theme={theme}>
         <Provider store={stor}>
-          <PersistGate persistor={persist} loading={null}>
+          <PersistGate persistor={persist}>
             <Container>
               <SafeAreaProvider>
                 <StatusBar />

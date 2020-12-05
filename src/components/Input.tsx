@@ -10,6 +10,7 @@ type InputProps = {
   placeholder?: string;
   icon?: JSX.Element;
   isSecure?: boolean;
+  noImage?: boolean;
   setValue: (value: string) => void;
   onFocus?: () => void;
 };
@@ -20,14 +21,17 @@ const Input = ({
   placeholder,
   icon,
   isSecure = false,
+  noImage = false,
   onFocus,
   setValue,
 }: InputProps) => (
   <Container width={percentWidth}>
-    {icon && <IconContainer>{icon}</IconContainer>}
+    {!noImage && icon && <IconContainer>{icon}</IconContainer>}
+
     <InputWrapper
       onFocus={onFocus}
       value={value}
+      noImage={noImage}
       onChangeText={setValue}
       secureTextEntry={isSecure}
       placeholder={placeholder}
@@ -41,12 +45,12 @@ const Container = styled.View<{width?: number}>`
   position: relative;
 `;
 
-const InputWrapper = styled(TextInput)`
+const InputWrapper = styled(TextInput)<{noImage: boolean}>`
   border: 2px solid ${({theme}) => theme.colors.whiteOpacity};
   border-top-width: 0;
   border-left-width: 0;
   border-right-width: 0;
-  padding-left: 40px;
+  padding-left: ${(props) => (props.noImage ? 10 : 40)}px;
   color: ${({theme}) => theme.colors.white};
 `;
 

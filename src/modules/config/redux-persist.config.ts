@@ -7,6 +7,7 @@ const reduxPersist = {
     key: 'root',
     storage: AsyncStorage,
     whitelist: ['auth'],
+    timeout: undefined,
   },
 };
 

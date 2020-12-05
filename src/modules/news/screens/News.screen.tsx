@@ -1,22 +1,33 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import {FlatList} from 'react-native-gesture-handler';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components/native';
 
-import Article from '../components/Article';
+import {getNews} from 'modules/auth/auth.reducer';
 
+import Article from '../components/Article';
+import {setNewsData} from '../../auth/auth.actions';
+
+const DEFAULT_ARTICLE_BG = 'https://cdn.hipwallpaper.com/i/81/44/mweBMY.jpg';
 const NEWS_API_KEY = '9adc34f09d224db7a3fe363f14c92741';
-const NEWS_URL = `http://newsapi.org/v2/everything?q=bitcoin&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`;
 const NEWS_BG_LINK = 'https://s3.envato.com/files/225756835/preview-image.jpg';
+const NEWS_URL = `http://newsapi.org/v2/everything?q=bitcoin&sortBy=publishedAt&apiKey=${NEWS_API_KEY}`;
 
 const NewsScreen = () => {
-  const [articles, setArticles] = useState<Array<any> | null>(null);
+  const dispatch = useDispatch();
+
+  const newsData = useSelector(getNews);
+  const [articles, setArticles] = useState<Array<any> | null>(newsData);
 
   useEffect(() => {
-    axios.get(NEWS_URL).then((data: any) => {
-      setArticles(data.data.articles);
-    });
-  }, []);
+    if (!newsData) {
+      axios.get(NEWS_URL).then((data: any) => {
+        setArticles(data.data.articles);
+        dispatch(setNewsData(data.data.articles));
+      });
+    }
+  }, [dispatch, newsData]);
 
   return (
     <Container>
@@ -46,7 +57,7 @@ const NewsScreen = () => {
                 author={item.author}
                 title={item.title}
                 content={item.content}
-                image={item.urlToImage}
+                image={item.urlToImage || DEFAULT_ARTICLE_BG}
                 description={item.description}
                 published={item.publishedAt}
               />
